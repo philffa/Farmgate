@@ -125,7 +125,7 @@ Respond with ONLY a JSON object, no other text, no markdown code fences, matchin
         body: JSON.stringify({
           contents: [{ parts: [{ text: prompt }] }],
           generationConfig: {
-            temperature: 0.2, // low temperature: we want consistent, grounded estimates, not creative variation
+            temperature: 1.0, // low temperature: we want consistent, grounded estimates, not creative variation
             responseMimeType: "application/json",
           },
         }),
