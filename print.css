@@ -1,0 +1,98 @@
+/* Print-only rules. These only apply when the browser is printing
+   (or "saving as PDF" via the print dialog) — invisible otherwise.
+   The #print-sheet element is built dynamically by js/pdf-export.js
+   right before printing, then removed afterward. */
+
+@media screen {
+  #print-sheet { display: none; }
+}
+
+@media print {
+  body > *:not(#print-sheet) {
+    display: none !important;
+  }
+  #print-sheet {
+    display: block;
+    background: #fff;
+    color: #222;
+    font-family: 'Inter', sans-serif;
+    padding: 0;
+    margin: 0;
+  }
+  #print-sheet h1{
+    font-family:'Source Serif 4', serif;
+    font-size: 26px;
+    margin: 0 0 4px;
+  }
+  #print-sheet .print-meta{
+    font-family:'IBM Plex Mono', monospace;
+    font-size: 11px;
+    color: #555;
+    margin-bottom: 18px;
+  }
+  #print-sheet .print-section{
+    margin-bottom: 20px;
+    break-inside: avoid;
+  }
+  #print-sheet .print-section h2{
+    font-family:'Source Serif 4', serif;
+    font-size: 15px;
+    border-bottom: 1px solid #999;
+    padding-bottom: 4px;
+    margin: 0 0 8px;
+  }
+  #print-sheet table{
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 11px;
+    margin-bottom: 10px;
+  }
+  #print-sheet th, #print-sheet td{
+    text-align: left;
+    padding: 4px 6px;
+    border-bottom: 1px solid #ccc;
+  }
+  #print-sheet .print-stat-row{
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    margin-bottom: 10px;
+  }
+  #print-sheet .print-stat{
+    font-size: 11px;
+  }
+  #print-sheet .print-stat-label{
+    color: #666;
+    display:block;
+    font-size: 9.5px;
+    text-transform: uppercase;
+    letter-spacing: .04em;
+  }
+  #print-sheet .print-stat-value{
+    font-family:'IBM Plex Mono', monospace;
+    font-weight: 600;
+    font-size: 13px;
+  }
+  #print-sheet .print-reasoning{
+    font-style: italic;
+    font-size: 10.5px;
+    color: #555;
+    border-left: 2px solid #999;
+    padding-left: 8px;
+    margin-top: 8px;
+  }
+  #print-sheet .print-chart{
+    width: 100%;
+    max-width: 500px;
+  }
+  #print-sheet footer{
+    margin-top: 30px;
+    font-size: 9px;
+    color: #888;
+    border-top: 1px solid #ccc;
+    padding-top: 8px;
+  }
+  @page {
+    margin: 1.5cm;
+  }
+}
