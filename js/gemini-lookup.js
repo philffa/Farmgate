@@ -9,7 +9,7 @@
 const GeminiLookup = (function () {
   "use strict";
 
-  const MODEL = "gemini-2.0-flash";
+  const MODEL = "gemini-3.5-flash";
   const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/${MODEL}:generateContent`;
 
   const VALID_CONFIDENCE = ["qld_specific", "east_coast", "australia_general", "global_estimate"];
