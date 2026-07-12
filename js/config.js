@@ -7,7 +7,7 @@
 const CONFIG = {
   SUPABASE_URL: "https://ahsezelwpsexyhmqfygy.supabase.co/",
   SUPABASE_ANON_KEY: "sb_publishable_EyfTwM3rwD0ol-tC0bDDUA_LryCUu4e",
-  GEMINI_API_KEY: "AQ.Ab8RN6LMbNyVYij6APjWeDTO72VYxevMiy8opZMftyAeb5BS2Q",
+  GEMINI_API_KEY: "AQ.Ab8RN6LdmKyqEy8Sa-nXCSQEh0j4sd2hhHbLF8MmcHkMI3OGmg",
 
   // How many days old a crop benchmark can be before the UI flags it as
   // stale and offers a one-click refresh. Adjust to taste.
