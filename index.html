@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Farmgate — Crop Economics</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/print.css">
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <div class="eyebrow">Farmgate</div>
+    <h1>Know your <em>numbers</em><br>before you plant.</h1>
+    <p class="lede">Search any crop for a researched price benchmark, log real buyer conversations into a demand curve, then test prices and size a planting. Saves to the cloud — same data on every device.</p>
+
+    <!-- ============ SEARCH (Part 0) ============ -->
+    <div class="search-panel">
+      <div class="search-row">
+        <input type="text" id="cropSearch" placeholder="Search a crop — e.g. sugar apple, kale, black sapote…" autocomplete="off">
+        <button id="searchBtn">Search</button>
+      </div>
+      <div class="search-status" id="searchStatus"></div>
+      <div class="recent-crops" id="recentCrops"></div>
+    </div>
+  </header>
+
+  <!-- ============ PART I : PRICE BENCHMARK ============ -->
+  <section class="sheet hidden" id="sheetBenchmark">
+    <div class="sheet-head">
+      <span class="sheet-num">I</span>
+      <h2 class="sheet-title" id="benchmarkTitle">Price benchmark</h2>
+    </div>
+    <p class="sheet-sub">A researched starting point, not verified market data. Always check the confidence level and date before relying on it.</p>
+
+    <div class="card">
+      <div class="benchmark-meta">
+        <span id="benchmarkDateLine">—</span>
+        <button class="refresh-btn" id="refreshBenchmarkBtn">↻ refresh this lookup</button>
+      </div>
+
+      <div class="stat-grid" id="benchmarkStats"></div>
+
+      <div class="reasoning-box" id="benchmarkReasoning"></div>
+    </div>
+  </section>
+
+  <!-- ============ PART II : DEMAND CURVE ============ -->
+  <section class="sheet hidden" id="sheetDemand">
+    <div class="sheet-head">
+      <span class="sheet-num">II</span>
+      <h2 class="sheet-title">Demand curve</h2>
+    </div>
+    <p class="sheet-sub">Every conversation with a buyer gives you one point: a price, and the volume they'd take at it. Treat stated prices as weaker evidence than confirmed trial orders.</p>
+
+    <div class="card">
+      <table>
+        <thead>
+          <tr>
+            <th style="width:26%">Buyer / contact</th>
+            <th style="width:14%">Price ($/kg)</th>
+            <th style="width:20%">Volume (kg/wk)</th>
+            <th style="width:14%">Type</th>
+            <th style="width:20%">Evidence</th>
+            <th style="width:4%"></th>
+          </tr>
+        </thead>
+        <tbody id="demandRows"></tbody>
+      </table>
+      <button class="add-row" id="addDemandRow">+ add buyer</button>
+      <div class="sync-indicator" id="demandSyncIndicator"></div>
+
+      <div class="stat-grid" id="demandStats"></div>
+
+      <div class="chart-wrap">
+        <svg id="demandChart" viewBox="0 0 820 340" preserveAspectRatio="xMidYMid meet"></svg>
+        <div class="chart-caption">Price ($/kg) plotted against volume buyers will take (kg/week) — each dot is one contact</div>
+        <div class="chart-caption" style="padding-top:0;">○ stated &nbsp; ● anchored &nbsp; ● trial (larger) &nbsp; ● repeat order (largest, dark) — solid, larger dots carry more weight</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ PART III : PRICE TEST ============ -->
+  <section class="sheet hidden" id="sheetPriceTest">
+    <div class="sheet-head">
+      <span class="sheet-num">III</span>
+      <h2 class="sheet-title">Test a price</h2>
+    </div>
+    <p class="sheet-sub">Pick a selling price and see how much of the demand above you'd actually capture — and what that's worth.</p>
+
+    <div class="card">
+      <div class="price-highlight">
+        <div>
+          <span class="field-label">Your selling price</span>
+          <span class="field-note">Try a few values — watch volume and revenue respond</span>
+        </div>
+        <input type="number" id="testPrice" value="10" step="0.5">
+      </div>
+
+      <div class="stat-grid" id="priceTestStats"></div>
+    </div>
+  </section>
+
+  <!-- ============ PART IV : PLANTING & MARGIN ============ -->
+  <section class="sheet hidden" id="sheetMargin">
+    <div class="sheet-head">
+      <span class="sheet-num">IV</span>
+      <h2 class="sheet-title">Planting size &amp; margin</h2>
+    </div>
+    <p class="sheet-sub">Turn the volume you want to supply into an area, a cost base, and a bottom line. Every assumption below is yours to change.</p>
+
+    <div class="card">
+      <div class="divider-label">Supply assumptions</div>
+      <div class="field-list" id="supplyInputs"></div>
+
+      <div class="divider-label">Cost &amp; price assumptions</div>
+      <div class="field-list" id="costInputs"></div>
+
+      <div class="divider-label">Results</div>
+      <div class="stat-grid" id="marginStats"></div>
+
+      <p class="note" id="marginNote"></p>
+
+      <button class="export-btn" id="exportPdfBtn">⬇ Export 1-page PDF</button>
+    </div>
+  </section>
+
+  <footer>
+    <span>Farmgate — crop research tool. Prices are AI-researched starting points, not verified market data.</span>
+    <span id="footerCropCount">—</span>
+  </footer>
+
+</div>
+
+<!-- Print-only export sheet, built dynamically by pdf-export.js -->
+<div id="print-sheet"></div>
+
+<!-- Supabase JS SDK, loaded before our own scripts -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<!-- App scripts, load order matters: config → supabase client → gemini → chart → app glue → demand curve → price/margin → pdf export -->
+<script src="js/config.js"></script>
+<script src="js/supabase-client.js"></script>
+<script src="js/gemini-lookup.js"></script>
+<script src="js/chart.js"></script>
+<script src="js/app.js"></script>
+<script src="js/demand-curve.js"></script>
+<script src="js/price-margin.js"></script>
+<script src="js/pdf-export.js"></script>
+</body>
+</html>

@@ -1,0 +1,7 @@
+# Real API keys — never commit this. Copy config.example.js to config.js locally.
+js/config.js
+
+# OS/editor cruft
+.DS_Store
+Thumbs.db
+*.swp
